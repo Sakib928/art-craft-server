@@ -5,7 +5,7 @@ const app = express()
 require('dotenv').config()
 const port = process.env.PORT || 5000
 app.use(cors({
-    origin: ["http://localhost:5000"],
+    origin: ["http://localhost:5173", "https://art-and-craft-79543.web.app/"],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE']
 }))
@@ -25,18 +25,24 @@ const client = new MongoClient(uri, {
 async function run() {
     try {
         // await client.connect();
-        const userCollection = client.db('coffeeDB').collection('user');
+        const allCraftsCollection = client.db('allCraftsDB').collection('allcrafts');
 
         app.get('/', (req, res) => {
             res.send('The server is running');
         })
 
-        app.get('/user', async (req, res) => {
-            const cursor = userCollection.find();
+        app.post('/allcrafts', async (req, res) => {
+            const craftItem = req.body;
+            const result = await allCraftsCollection.insertOne(craftItem);
+            res.send(result);
+            console.log(result);
+        })
+
+        app.get('/allcrafts', async (req, res) => {
+            const cursor = allCraftsCollection.find();
             const result = await cursor.toArray();
             res.send(result);
         })
-
         // await client.db("admin").command({ ping: 1 });
         // console.log("Pinged your deployment. You successfully connected to MongoDB!");
     } finally {
