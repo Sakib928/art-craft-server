@@ -1,11 +1,11 @@
 const express = require('express')
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const cors = require('cors')
 const app = express()
 require('dotenv').config()
 const port = process.env.PORT || 5000
 app.use(cors({
-    origin: ["http://localhost:5173", "https://art-and-craft-79543.web.app/"],
+    origin: '*',
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE']
 }))
@@ -49,6 +49,23 @@ async function run() {
             const query = { filterMail: user };
             const cursor = await allCraftsCollection.find(query);
             const result = await cursor.toArray();
+            res.send(result);
+        })
+
+        app.put('/update/:id', async (req, res) => {
+            const id = req.params.id;
+            const filter = { _id: new ObjectId(id) };
+            const options = {
+                upsert: true
+            }
+            const updateItem = req.body;
+            const updatedItem = {
+                $set: {
+                    itemName: updateItem.itemName,
+
+                }
+            }
+            const result = await allCraftsCollection.updateOne(filter, updatedItem, options);
             res.send(result);
         })
         // await client.db("admin").command({ ping: 1 });
