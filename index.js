@@ -52,6 +52,22 @@ async function run() {
             res.send(result);
         })
 
+        app.get('/details/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: new ObjectId(id) };
+            const result = await allCraftsCollection.findOne(query);
+            res.send(result);
+        })
+
+        app.get('/crafts/:subCategory', async (req, res) => {
+            let subCategory = req.params.subCategory;
+            subCategory = subCategory.replace('_', ' ');
+            const query = { subCategory: subCategory };
+            const cursor = allCraftsCollection.find(query);
+            const result = await cursor.toArray();
+            res.send(result);
+        })
+
         app.put('/update/:id', async (req, res) => {
             const id = req.params.id;
             const filter = { _id: new ObjectId(id) };
@@ -66,6 +82,13 @@ async function run() {
                 }
             }
             const result = await allCraftsCollection.updateOne(filter, updatedItem, options);
+            res.send(result);
+        })
+
+        app.delete('/delete/:id', async (req, res) => {
+            const id = req.params.id;
+            const filter = { _id: new ObjectId(id) };
+            const result = await allCraftsCollection.deleteOne(filter);
             res.send(result);
         })
         // await client.db("admin").command({ ping: 1 });
