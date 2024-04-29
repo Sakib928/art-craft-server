@@ -35,11 +35,19 @@ async function run() {
             const craftItem = req.body;
             const result = await allCraftsCollection.insertOne(craftItem);
             res.send(result);
-            console.log(result);
+            // console.log(result);
         })
 
         app.get('/allcrafts', async (req, res) => {
             const cursor = allCraftsCollection.find();
+            const result = await cursor.toArray();
+            res.send(result);
+        })
+
+        app.get('/mycrafts/:email', async (req, res) => {
+            const user = req.params.email;
+            const query = { filterMail: user };
+            const cursor = await allCraftsCollection.find(query);
             const result = await cursor.toArray();
             res.send(result);
         })
