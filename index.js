@@ -68,6 +68,8 @@ async function run() {
             res.send(result);
         })
 
+        app.get('/')
+
         app.put('/update/:id', async (req, res) => {
             const id = req.params.id;
             const filter = { _id: new ObjectId(id) };
@@ -78,6 +80,14 @@ async function run() {
             const updatedItem = {
                 $set: {
                     itemName: updateItem.itemName,
+                    photoURL: updateItem.photoURL,
+                    subCategory: updateItem.subCategory,
+                    shortDescription: updateItem.shortDescription,
+                    price: updateItem.price,
+                    rating: updateItem.rating,
+                    customization: updateItem.customization,
+                    prcessingTime: updateItem.prcessingTime,
+                    currentStock: updateItem.currentStock
 
                 }
             }
