@@ -111,5 +111,5 @@ run().catch(console.dir);
 
 
 app.listen(port, () => {
-    console.log(`server running in the port ${port}`);
+    console.log(`server is running at port ${port}`);
 })
