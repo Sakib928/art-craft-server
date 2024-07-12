@@ -5,7 +5,7 @@ const app = express()
 require('dotenv').config()
 const port = process.env.PORT || 5000
 app.use(cors({
-    origin: ['http://localhost:5173', 'https://art-and-craft-79543.web.app'],
+    origin: ['http://localhost:5173', 'https://art-and-craft-79543.web.app', 'https://scribble-art-and-craft.netlify.app'],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE']
 }))
